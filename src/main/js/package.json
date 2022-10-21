@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "web-dev-server",
     "build": "rimraf dist && rollup -c rollup.config.js",
+    "dist": "rimraf ../resources/dist/; cp -rf dist ../resources/",
     "start:build": "web-dev-server --root-dir dist --app-index index.html --open"
   },
   "author": "",

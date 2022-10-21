@@ -1,0 +1,27 @@
+# All links, should be empty on startup
+GET http://localhost:8080/api/links
+Accept: application/json
+
+###
+
+# Adding a new link, should fail without amount
+POST http://localhost:8080/api/links
+Content-Type: application/json
+
+{}
+
+###
+
+# Adding a new link, should return a link
+POST http://localhost:8080/api/links
+Content-Type: application/json
+
+{
+  "amount": 100
+}
+
+###
+
+# All links, should contain one link
+GET http://localhost:8080/api/links
+Accept: application/json
