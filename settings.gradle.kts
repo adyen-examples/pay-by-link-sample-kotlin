@@ -1,0 +1,1 @@
+rootProject.name = "pay-by-link-sample-kotlin"
