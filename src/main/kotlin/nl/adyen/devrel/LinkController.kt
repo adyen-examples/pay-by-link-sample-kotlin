@@ -14,7 +14,7 @@ data class Link(
     val reference : String,
     val expiresAt : String,
     val status : String
-    )
+)
 
 val links = HashMap<String, Link>()
 
