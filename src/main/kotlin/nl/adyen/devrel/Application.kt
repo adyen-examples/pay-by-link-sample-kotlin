@@ -36,9 +36,6 @@ fun Application.module() {
     val linkController = LinkController(adyenConfig)
 
     routing {
-        get("/api/hello") {
-            call.respondText("Hello World!")
-        }
 
         get("/api/links"){
             call.respond(linkController.getLinks())

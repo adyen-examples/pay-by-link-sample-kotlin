@@ -25,4 +25,8 @@ class AdyenApiWrapper(private val adyenConfig: AdyenConfig) {
 
         return paymentLinks.create(createPaymentLinkRequest)
     }
+
+    fun getPaymentLink(id: String): PaymentLinkResource? {
+        return paymentLinks.retrieve(id)
+    }
 }
