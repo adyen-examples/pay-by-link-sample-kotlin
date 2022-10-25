@@ -1,6 +1,10 @@
 import {LitElement, html} from 'lit';
 import './payment-link.js';
 
+import '@vaadin/button';
+import '@vaadin/number-field';
+import '@vaadin/vertical-layout';
+
 export class PaymentLinksInterface extends LitElement {
     static properties = {
         links : { Object},
@@ -19,22 +23,28 @@ export class PaymentLinksInterface extends LitElement {
     render() {
         return html`
     <h1>Payment Link interface!</h1>
-    
+
+    <vaadin-vertical-layout theme="spacing padding">
     <div>
         <p>Create a new link:</p>
-        <input
+        <vaadin-number-field
             .value = "${this.amount}"
-            type="number"
             @input="${e => {this.amount = e.target.value;}}"
-        />(€)
-        <input type="submit" value="Create!" @click="${this._create}">
+        >
+            <div slot="suffix">€</div>
+        </vaadin-number-field>
+
+        <vaadin-button theme="primary" design="Emphasized" @click="${this._create}">Create!</vaadin-button>
     </div>
-    
-    <button @click="${this._reload}">Reload links ↺</button>
-    
-    <div>
-        ${this.links.map( link => html `<payment-link .link=${link}></payment-link>`)}
-    </div>
+
+
+        <vaadin-vertical-layout theme="spacing padding">
+            <vaadin-button theme="primary" @click="${this._reload}">Reload links ↺</vaadin-button>
+            ${this.links.map( link => html `<payment-link .link=${link}></payment-link>`)}
+        </vaadin-vertical-layout>
+        
+    </vaadin-vertical-layout>
+
     `;
     }
 
