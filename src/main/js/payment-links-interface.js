@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css} from 'lit';
 import './payment-link.js';
 
 import '@vaadin/button';
@@ -12,6 +12,53 @@ export class PaymentLinksInterface extends LitElement {
 
     };
 
+    static styles = css`
+      :host{    
+          width: 100%;
+          max-width: 1140px;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .intro{
+      margin: 5px;
+    }
+      
+    .creationForm{
+      margin: 15px;    
+    }
+
+    .linksList{
+      margin: 15px;
+    }
+      
+      .linkslistTitle{
+        display: flex;
+        align-items: center;
+      }
+      
+      .createButton{
+        margin-left: 10px;
+      }
+      
+      .reloadButton{
+        margin-left: auto;
+      }
+      
+      ul{
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      
+      li{
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+  `;
+
     constructor() {
         super();
         this.links = [];
@@ -22,28 +69,49 @@ export class PaymentLinksInterface extends LitElement {
 
     render() {
         return html`
-    <h1>Payment Link interface!</h1>
+    <h1>Adyen Pay by Link demo</h1>
 
-    <vaadin-vertical-layout theme="spacing padding">
-    <div>
-        <p>Create a new link:</p>
+    <div class="intro">
+        <p>Create Payment Links using the form below, and test them out!</p>
+        <p>Make sure the payment method you want to use in the payment links are enabled for your account.
+            Refer to the <a href="https://docs.adyen.com/payment-methods#add-payment-methods-to-your-account">the documentation</a>
+            to add missing payment methods.</p>
+        <p>To learn more about payment links, check out <a href="https://www.adyen.com/pay-by-link">pay-by-link</a>.</p>
+    </div>
+    
+    <div class="creationForm">
+        <h2>Create a new link</h2>
+        
         <vaadin-number-field
+            label="Amount"
             .value = "${this.amount}"
             @input="${e => {this.amount = e.target.value;}}"
         >
             <div slot="suffix">€</div>
         </vaadin-number-field>
 
-        <vaadin-button theme="primary" design="Emphasized" @click="${this._create}">Create!</vaadin-button>
+        <vaadin-button class="createButton" theme="primary" design="Emphasized" @click="${this._create}">Create!</vaadin-button>
     </div>
 
 
-        <vaadin-vertical-layout theme="spacing padding">
-            <vaadin-button theme="primary" @click="${this._reload}">Reload links ↺</vaadin-button>
-            ${this.links.map( link => html `<payment-link .link=${link}></payment-link>`)}
-        </vaadin-vertical-layout>
+    <div class="linksList">
+        <div class="linkslistTitle">
+            <h2>Created payment links</h2> 
+            <vaadin-button class="reloadButton" theme="primary" @click="${this._reload}">Reload all links ↺</vaadin-button>
+        </div>
         
-    </vaadin-vertical-layout>
+        ${this.links.length === 0 ? 
+            html`<p>No links created yet!</p>`        
+            : html`<ul>
+                    ${this.links.map( link => html`
+                        <li>
+                            <payment-link .link=${link}></payment-link>
+                        </li>
+                    `)}
+                    </ul>`
+        }
+    </div>
+        
 
     `;
     }

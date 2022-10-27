@@ -5,6 +5,7 @@ import com.adyen.enums.Environment
 import com.adyen.model.Amount
 import com.adyen.model.checkout.CreatePaymentLinkRequest
 import com.adyen.model.checkout.PaymentLinkResource
+import com.adyen.service.Checkout
 import com.adyen.service.PaymentLinks
 
 class AdyenApiWrapper(private val adyenConfig: AdyenConfig) {
