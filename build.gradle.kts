@@ -7,12 +7,14 @@ plugins {
     kotlin("jvm") version "1.7.20"
     id("io.ktor.plugin") version "2.1.2"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.7.20"
+    id("com.github.node-gradle.node") version "3.4.0"
+
 }
 
 group = "devrel.adyen.nl"
 version = "0.0.1"
 application {
-    mainClass.set("devrel.adyen.nl.ApplicationKt")
+    mainClass.set("nl.adyen.devrel.ApplicationKt")
 
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
@@ -35,4 +37,19 @@ dependencies {
     implementation("com.adyen:adyen-java-api-library:18.1.2")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+}
+
+val installWebDependencies by tasks.registering(com.github.gradle.node.npm.task.NpmTask::class){
+    workingDir.set(File("./src/main/js/pluckr-app"))
+    args.set(listOf("install"))
+}
+
+val buildWebDependencies by tasks.registering(com.github.gradle.node.npm.task.NpmTask::class){
+    dependsOn(installWebDependencies)
+    workingDir.set(File("./src/main/js"))
+    args.set(listOf("run", "dist"))
+}
+
+tasks.build {
+    dependsOn(buildWebDependencies)
 }
