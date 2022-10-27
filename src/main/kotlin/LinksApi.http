@@ -22,6 +22,17 @@ Content-Type: application/json
 
 ###
 
+# Adding a new link with reference, should return a link
+POST http://localhost:8080/api/links
+Content-Type: application/json
+
+{
+  "amount": 100,
+  "reference": "unique reference"
+}
+
+###
+
 # All links, should contain one link
 GET http://localhost:8080/api/links
 Accept: application/json

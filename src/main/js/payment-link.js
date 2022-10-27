@@ -41,6 +41,7 @@ export class PaymentLink extends LitElement {
         return html`
             <div class="shell">
                 <div><a href="${this.link.url}">${this.link.id}</a> </div>
+                <div><p>${this.link.reference} </p></div>
                 <div><p>${this.link.amountValue} ${this.link.amountCurrency} </p></div>
                 <div><p class="expiration">Expires : ${new Date(this.link.expiresAt).toLocaleString()} </p></div>
                 <div class="badge">${this._returnBadge(this.link.status)}</div>

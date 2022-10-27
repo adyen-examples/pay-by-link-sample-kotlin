@@ -3,12 +3,13 @@ import './payment-link.js';
 
 import '@vaadin/button';
 import '@vaadin/number-field';
-import '@vaadin/vertical-layout';
+import '@vaadin/text-field';
 
 export class PaymentLinksInterface extends LitElement {
     static properties = {
         links : { Object},
         amount : {Number},
+        reference : {String},
 
     };
 
@@ -57,12 +58,17 @@ export class PaymentLinksInterface extends LitElement {
         margin-top: 15px;
         margin-bottom: 15px;
       }
-  `;
+
+      vaadin-text-field{
+        margin-left: 10px;
+      }
+    `;
 
     constructor() {
         super();
         this.links = [];
         this.amount = "";
+        this.reference = "";
 
         this._reload();
     }
@@ -89,6 +95,13 @@ export class PaymentLinksInterface extends LitElement {
         >
             <div slot="suffix">€</div>
         </vaadin-number-field>
+
+        <vaadin-text-field 
+                label="Reference" 
+                .value = "${this.reference}"
+                @input="${e => {this.reference = e.target.value;}}"
+                clear-button-visible>
+        </vaadin-text-field>
 
         <vaadin-button class="createButton" theme="primary" design="Emphasized" @click="${this._create}">Create!</vaadin-button>
     </div>
@@ -120,10 +133,14 @@ export class PaymentLinksInterface extends LitElement {
         fetch("/api/links", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({"amount": this.amount}) // body data type must match "Content-Type" header
+            body: JSON.stringify({
+                "amount": this.amount,
+                "reference": this.reference.length === 0 ? null : this.reference
+            }) // body data type must match "Content-Type" header
         })
             .then(r =>{
                 this.amount = "";
+                this.reference = "";
                 this._reload();
             })
             .catch(error => "Error: " + error);

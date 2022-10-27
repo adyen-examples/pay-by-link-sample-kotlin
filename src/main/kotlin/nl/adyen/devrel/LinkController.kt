@@ -52,9 +52,7 @@ class LinkController(adyenConfig: AdyenConfig) {
     }
 
     fun addLink(request: NewLinkRequest) : Link{
-
-        val reference = UUID.randomUUID().toString()
-        val newLink = adyenApiWrapper.createPaymentLink(request.amount, UUID.randomUUID().toString()).toLink()
+        val newLink = adyenApiWrapper.createPaymentLink(request.amount, request.reference ?: UUID.randomUUID().toString()).toLink()
         links[newLink.id] = newLink
 
         return newLink

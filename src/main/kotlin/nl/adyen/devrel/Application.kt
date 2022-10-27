@@ -15,7 +15,8 @@ import kotlin.system.exitProcess
 
 @Serializable
 data class NewLinkRequest(
-    val amount : Long
+    val amount : Long,
+    val reference: String? = null
 )
 
 data class AdyenConfig (
