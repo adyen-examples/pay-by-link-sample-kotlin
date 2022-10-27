@@ -25,3 +25,17 @@ Content-Type: application/json
 # All links, should contain one link
 GET http://localhost:8080/api/links
 Accept: application/json
+
+
+### Adyen API
+
+GET https://checkout-test.adyen.com/v69/paymentLinks/{{linkId}}
+Content-Type: application/json
+x-API-key: {{apiKey}}
+
+
+### Trying generic GET
+
+GET https://checkout-test.adyen.com/v69/paymentLinks
+Content-Type: application/json
+x-API-key: {{apiKey}}

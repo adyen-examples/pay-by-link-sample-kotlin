@@ -6,13 +6,22 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "web-dev-server",
-    "build": "rimraf dist && rollup -c rollup.config.js",
+    "clean": "rimraf dist",
+    "build": "npm run clean && rollup -c rollup.config.js",
     "dist": "rimraf ../resources/dist/; cp -rf dist ../resources/",
     "start:build": "web-dev-server --root-dir dist --app-index index.html --open"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@material/mwc-button": "^0.27.0",
+    "@ui5/webcomponents": "^1.8.0",
+    "@vaadin/button": "^23.2.5",
+    "@vaadin/horizontal-layout": "^23.2.5",
+    "@vaadin/icons": "^23.2.6",
+    "@vaadin/number-field": "^23.2.5",
+    "@vaadin/vaadin-lumo-styles": "^23.2.6",
+    "@vaadin/vertical-layout": "^23.2.5",
     "lit": "^2.4.0"
   },
   "devDependencies": {
@@ -25,7 +34,6 @@
     "babel-plugin-template-html-minifier": "^4.1.0",
     "koa-proxies": "^0.12.2",
     "rimraf": "^3.0.2",
-    "rollup-plugin-terser": "^7.0.2",
-    "tailwindcss": "^3.2.0"
+    "rollup-plugin-terser": "^7.0.2"
   }
 }

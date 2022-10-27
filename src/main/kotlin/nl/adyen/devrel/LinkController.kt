@@ -1,5 +1,6 @@
 package nl.adyen.devrel
 
+import com.adyen.model.checkout.PaymentLinkResource
 import kotlinx.serialization.Serializable
 import java.util.UUID
 
@@ -22,31 +23,50 @@ class LinkController(adyenConfig: AdyenConfig) {
 
     private val adyenApiWrapper = AdyenApiWrapper(adyenConfig)
 
+    /*
+    We do this before every request for simplicity, but for scalability it should be done in the background
+     */
+    private fun updateAllLinks(){
+        links.keys.forEach { updateLink(it) }
+    }
+
+    /*
+    We do this before every request for simplicity, but for scalability it should be done in the background
+     */
+    private fun updateLink(id: String) {
+        val updatedLink = adyenApiWrapper.getPaymentLink(id)?.toLink()
+        if(updatedLink != null){
+            links[id] = updatedLink
+        }
+    }
+
     fun getLinks(): List<Link> {
+        updateAllLinks()
+
         return links.entries.toList().map { it.value }
     }
 
     fun getLink(id: String?) : Link? {
+        if( id != null) { updateLink(id) }
         return links[id]
     }
 
     fun addLink(request: NewLinkRequest) : Link{
 
         val reference = UUID.randomUUID().toString()
-        val paymentLinkResource = adyenApiWrapper.createPaymentLink(request.amount, reference)
-
-        val newLink = Link(
-            id = paymentLinkResource.id,
-            url = paymentLinkResource.url,
-            amountValue = paymentLinkResource.amount.value,
-            amountCurrency = paymentLinkResource.amount.currency,
-            reference = paymentLinkResource.reference,
-            expiresAt = paymentLinkResource.expiresAt,
-            status = paymentLinkResource.status.value
-        )
-
-        links[paymentLinkResource.id] = newLink
+        val newLink = adyenApiWrapper.createPaymentLink(request.amount, UUID.randomUUID().toString()).toLink()
+        links[newLink.id] = newLink
 
         return newLink
     }
 }
+
+fun PaymentLinkResource.toLink() = Link(
+    id = this.id,
+    url = this.url,
+    amountValue = this.amount.value,
+    amountCurrency = this.amount.currency,
+    reference = this.reference,
+    expiresAt = this.expiresAt,
+    status = this.status.value
+)
