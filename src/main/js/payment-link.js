@@ -14,7 +14,6 @@ export class PaymentLink extends LitElement {
         css`
             :host{
               background-color: #eeeeee;
-              //margin: 10px;
             }
           
             .shell{
