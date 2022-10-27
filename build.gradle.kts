@@ -39,7 +39,13 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
 
+val installWebDependencies by tasks.registering(com.github.gradle.node.npm.task.NpmTask::class){
+    workingDir.set(File("./src/main/js/pluckr-app"))
+    args.set(listOf("install"))
+}
+
 val buildWebDependencies by tasks.registering(com.github.gradle.node.npm.task.NpmTask::class){
+    dependsOn(installWebDependencies)
     workingDir.set(File("./src/main/js"))
     args.set(listOf("run", "dist"))
 }
