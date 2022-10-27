@@ -7,6 +7,8 @@ plugins {
     kotlin("jvm") version "1.7.20"
     id("io.ktor.plugin") version "2.1.2"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.7.20"
+    id("com.github.node-gradle.node") version "3.4.0"
+
 }
 
 group = "devrel.adyen.nl"
@@ -35,4 +37,13 @@ dependencies {
     implementation("com.adyen:adyen-java-api-library:18.1.2")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+}
+
+val buildWebDependencies by tasks.registering(com.github.gradle.node.npm.task.NpmTask::class){
+    workingDir.set(File("./src/main/js"))
+    args.set(listOf("run", "dist"))
+}
+
+tasks.build {
+    dependsOn(buildWebDependencies)
 }
